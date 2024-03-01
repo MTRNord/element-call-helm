@@ -6,7 +6,15 @@ version: 0.1.0
 appVersion: "v0.5.15"
 
 dependencies:
-- name: livekit-server
-  version: "1.5.3"
-  repository: "https://helm.livekit.io"
-  condition: livekit-server.enabled
+  - name: livekit-server
+    version: "1.5.3"
+    repository: "https://helm.livekit.io"
+    condition: livekit-server.enabled
+  - name: egress
+    version: "1.8.1"
+    repository: "https://helm.livekit.io"
+    condition: egress.enabled
+  - name: redis
+    version: ^18.17.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

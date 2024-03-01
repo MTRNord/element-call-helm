@@ -37,7 +37,7 @@ spec:
           imagePullPolicy: {{ .Values.livekit_mgmt.image.pullPolicy }}
           env:
             - name: LIVEKIT_URL
-              value: ws://{{ index .Values "livekit-server" "livekit" "port" }}:7800
+              value: ws://{{ include "livekit-server.fullname" . }}:{{ index .Values "livekit-server" "livekit" "port" }}
             - name: LIVEKIT_KEY
               value: {{ .Values.livekit_key }}
             - name: LIVEKIT_SECRET
