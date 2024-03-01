@@ -1,0 +1,109 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "element_call.fullname" . }}
+  labels:
+    {{- include "element_call.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.element_call.autoscaling.enabled }}
+  replicas: {{ .Values.element_call.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "element_call.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.element_call.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "element_call.labels" . | nindent 8 }}
+        {{- with .Values.element_call.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.element_call.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.element_call.securityContext | nindent 12 }}
+          image: "{{ .Values.element_call.image.repository }}:{{ .Values.element_call.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.element_call.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            {{- toYaml .Values.element_call.resources | nindent 12 }}
+          {{- with .Values.element_call.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.element_call.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.element_call.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.element_call.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.element_call.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- if .Values.element_call.autoscaling.enabled }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "element_call.fullname" . }}
+  labels:
+    {{- include "element_call.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "element_call.fullname" . }}
+  minReplicas: {{ .Values.element_call.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.element_call.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.element_call.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.element_call.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.element_call.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.element_call.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

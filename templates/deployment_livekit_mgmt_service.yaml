@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "element_call.livekit_mgmt_name" . }}
+  labels:
+    {{- include "element_call.livekit_mgmt.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.livekit_mgmt.autoscaling.enabled }}
+  replicas: {{ .Values.livekit_mgmt.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "element_call.livekit_mgmt.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.livekit_mgmt.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "element_call.livekit_mgmt.labels" . | nindent 8 }}
+        {{- with .Values.livekit_mgmt.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.livekit_mgmt.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.livekit_mgmt.securityContext | nindent 12 }}
+          image: "{{ .Values.livekit_mgmt.image.repository }}:{{ .Values.livekit_mgmt.image.tag }}"
+          imagePullPolicy: {{ .Values.livekit_mgmt.image.pullPolicy }}
+          env:
+            - name: LIVEKIT_URL
+              value: ws://{{ index .Values "livekit-server" "livekit" "port" }}:7800
+            - name: LIVEKIT_KEY
+              value: {{ .Values.livekit_key }}
+            - name: LIVEKIT_SECRET
+              value: {{ .Values.livekit_secret }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          resources:
+            {{- toYaml .Values.livekit_mgmt.resources | nindent 12 }}
+          {{- with .Values.livekit_mgmt.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.livekit_mgmt.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.livekit_mgmt.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.livekit_mgmt.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.livekit_mgmt.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
