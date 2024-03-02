@@ -12,6 +12,12 @@ livekit_secret: secret
 element_call:
   replicaCount: 1
 
+  config:
+    eula: https://example.com
+    homeserver:
+      base_url: "https://call.localhost"
+      server_name: "call.localhost"
+
   image:
     repository: ghcr.io/element-hq/element-call
     pullPolicy: IfNotPresent

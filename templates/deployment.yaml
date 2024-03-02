@@ -56,10 +56,15 @@ spec:
             {{- toYaml .Values.element_call.resources | nindent 12 }}
           {{- with .Values.element_call.volumeMounts }}
           volumeMounts:
+            - name: config
+              mountPath: /app
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.element_call.volumes }}
       volumes:
+        - name: config
+          configMap:
+            name: {{ include "element_call.fullname" . }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.element_call.nodeSelector }}
