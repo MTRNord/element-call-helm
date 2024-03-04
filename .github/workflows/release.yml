@@ -26,6 +26,11 @@ jobs:
       - name: Install Helm
         uses: azure/setup-helm@v4
 
+      - name: Setup repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add livekit https://helm.livekit.io
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         env:
