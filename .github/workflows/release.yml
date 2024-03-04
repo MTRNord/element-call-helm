@@ -2,8 +2,8 @@ name: Release Charts
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - main
 
 jobs:
   release:
@@ -11,6 +11,7 @@ jobs:
     # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
     permissions:
       contents: write
+      workflows: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
