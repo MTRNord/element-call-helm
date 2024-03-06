@@ -48,13 +48,13 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
