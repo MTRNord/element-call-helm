@@ -194,9 +194,8 @@ livekit-server:
       tls_port: 5349
       udp_port: 443
       external_tls: true
-    keys:
-      # CHANGE ME
-      devkey: secret
+    # Changeme. Values are `key: secret``
+    keys: {}
     signal_relay:
       enabled: true
 
