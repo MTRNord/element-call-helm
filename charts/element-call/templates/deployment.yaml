@@ -54,17 +54,17 @@ spec:
             periodSeconds: 3
           resources:
             {{- toYaml .Values.element_call.resources | nindent 12 }}
-          {{- with .Values.element_call.volumeMounts }}
           volumeMounts:
             - name: config
               mountPath: /app
+          {{- with .Values.element_call.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.element_call.volumes }}
       volumes:
         - name: config
           configMap:
             name: {{ include "element_call.fullname" . }}
+      {{- with .Values.element_call.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.element_call.nodeSelector }}
