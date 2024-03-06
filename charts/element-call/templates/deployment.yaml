@@ -57,7 +57,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /app/config.json
-              subpath: config.json
+              subPath: config.json
           {{- with .Values.element_call.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
