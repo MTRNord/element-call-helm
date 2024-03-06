@@ -1,5 +1,5 @@
 {{- if .Values.livekit_mgmt.ingress.enabled -}}
-{{- $fullName := include "element_call.fullname" . -}}
+{{- $fullName := include "element_call.livekit_mgmt_name" . -}}
 {{- if and .Values.livekit_mgmt.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.livekit_mgmt.ingress.annotations "kubernetes.io/ingress.class") }}
   {{- $_ := set .Values.livekit_mgmt.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}

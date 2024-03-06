@@ -2,7 +2,7 @@ apiVersion: v2
 name: element-call
 description: A Helm chart for element_call
 type: application
-version: 0.1.12
+version: 0.1.13
 appVersion: "v0.5.15"
 
 dependencies:
