@@ -17,6 +17,8 @@ element_call:
     homeserver:
       base_url: "https://call.localhost"
       server_name: "call.localhost"
+    livekit:
+      livekit_service_url: "call-jwt.localhost"
 
   image:
     repository: ghcr.io/element-hq/element-call
@@ -168,6 +170,23 @@ livekit_mgmt:
   tolerations: []
 
   affinity: {}
+  
+  ingress:
+    enabled: false
+    className: ""
+    annotations:
+      {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
 
 livekit-server:
   enabled: true

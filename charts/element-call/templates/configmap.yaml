@@ -2,9 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "element_call.fullname" . }}
-  labels:
-    {{- include "element_call.labels" . | nindent 4 }}
+  name: { { include "element_call.fullname" . } }
+  labels: { { - include "element_call.labels" . | nindent 4 } }
 data:
   config.json: |
     {
@@ -14,5 +13,8 @@ data:
           "server_name": "{{ .Values.element_call.config.homeserver.server_name }}"
         }
       },
-      "eula": "{{ .Values.element_call.config.eula }}"
+      "eula": "{{ .Values.element_call.config.eula }}",
+      "livekit": {
+        livekit_service_url: "{{ .Values.element_call.config.livekit.livekit_service_url }}"
+      }
     }
