@@ -8,6 +8,7 @@ imagePullSecrets: []
 ## THESE ALSO MUST BE DEFINED AT `.livekit-server.livekit.keys`!
 livekit_key: devkey
 livekit_secret: secret
+livekit_ws: wss://localhost:7880
 
 element_call:
   replicaCount: 1
