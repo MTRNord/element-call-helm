@@ -207,6 +207,10 @@ egress:
     api_secret: secret
     ws_url: changeme
     insecure: true
+    redis:
+      address: must be the same redis address used by your livekit server
+      password: redis password
+      db: redis db
 
 redis:
   enabled: true
