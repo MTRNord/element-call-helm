@@ -3,6 +3,29 @@ entries:
   element-call:
   - apiVersion: v2
     appVersion: v0.5.15
+    created: "2024-03-06T13:36:14.486395801Z"
+    dependencies:
+    - condition: livekit-server.enabled
+      name: livekit-server
+      repository: https://helm.livekit.io
+      version: 1.5.3
+    - condition: egress.enabled
+      name: egress
+      repository: https://helm.livekit.io
+      version: 1.8.1
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ^18.17.0
+    description: A Helm chart for element_call
+    digest: 6ac162d15402920823380959eb1b356fe7db0a11aa24abb3299f3ab52882d72f
+    name: element-call
+    type: application
+    urls:
+    - https://github.com/MTRNord/element-call-helm/releases/download/element-call-0.1.14/element-call-0.1.14.tgz
+    version: 0.1.14
+  - apiVersion: v2
+    appVersion: v0.5.15
     created: "2024-03-06T13:10:48.216600821Z"
     dependencies:
     - condition: livekit-server.enabled
@@ -323,4 +346,4 @@ entries:
     urls:
     - https://github.com/MTRNord/element-call-helm/releases/download/element-call-0.1.0/element-call-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-06T13:10:48.216702009Z"
+generated: "2024-03-06T13:36:14.486499123Z"
