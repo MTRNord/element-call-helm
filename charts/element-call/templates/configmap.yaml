@@ -15,6 +15,6 @@ data:
       },
       "eula": "{{ .Values.element_call.config.eula }}",
       "livekit": {
-        livekit_service_url: "{{ .Values.element_call.config.livekit.livekit_service_url }}"
+        "livekit_service_url": "{{ .Values.element_call.config.livekit.livekit_service_url }}"
       }
     }
